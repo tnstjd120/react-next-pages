@@ -1,27 +1,52 @@
 import Seo from "@/components/Seo";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function Home() {
-  const [movies, setMovies] = useState([]);
+export default function Home({ results }) {
+  // const [movies, setMovies] = useState([]);
 
-  useEffect(() => {
-    (async () => {
-      const { results } = await (await fetch(`/api/movies`)).json();
+  // useEffect(() => {
+  //   (async () => {
+  //     const { results } = await (await fetch(`/api/movies`)).json();
 
-      setMovies(results);
-    })();
-  }, []);
+  //     setMovies(results);
+  //   })();
+  // }, []);
+
+  const router = useRouter();
+
+  const handleClick = (id, title, thumbnail) => {
+    router.push(
+      {
+        pathname: `movies/${id}`,
+        query: {
+          id,
+          title,
+          thumbnail,
+        },
+      },
+      `movies/${id}`
+    );
+  };
 
   return (
     <div className="container">
       <Seo title="Home" />
-      {!movies && <h4>Loading...</h4>}
-      {movies?.map((movie) => (
-        <div className="movie" key={movie.id}>
-          <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
+      {/* {!movies && <h4>Loading...</h4>} */}
+
+      {results?.map((movie) => (
+        <div
+          className="movie"
+          key={movie.id}
+          onClick={() =>
+            handleClick(movie.id, movie.original_title, movie.poster_path)
+          }
+        >
+          <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
           <h4>{movie.original_title}</h4>
         </div>
       ))}
+
       <style jsx>{`
         .container {
           display: grid;
@@ -44,6 +69,7 @@ export default function Home() {
           border-radius: 12px;
           transition: transform 0.2s ease-in-out;
           box-shadow: rgba(255, 255, 255, 0.2) 0px 4px 12px;
+          cursor: pointer;
         }
         .movie:hover img {
           transform: scale(1.05) translateY(-10px);
@@ -57,3 +83,15 @@ export default function Home() {
     </div>
   );
 }
+
+export const getServerSideProps = async () => {
+  const { results } = await (
+    await fetch("http://localhost:3000/api/movies")
+  ).json();
+
+  return {
+    props: {
+      results,
+    },
+  };
+};

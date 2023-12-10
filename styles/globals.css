@@ -1,6 +1,6 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -39,6 +39,11 @@ h1 {
   font-size: 40px;
   font-weight: bold;
   padding: 50px;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
 }
 
 a.active {
