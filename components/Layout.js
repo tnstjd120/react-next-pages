@@ -14,9 +14,17 @@ const Layout = ({ children }) => {
         </title>
       </Head>
 
-      <NavBar />
-
-      <div>{children}</div>
+      <div className="wrap">
+        <NavBar />
+        <div>{children}</div>
+      </div>
+      <style jsx>{`
+        .wrap {
+          width: 100%;
+          max-width: 768px;
+          margin: 0 auto;
+        }
+      `}</style>
     </>
   );
 };
