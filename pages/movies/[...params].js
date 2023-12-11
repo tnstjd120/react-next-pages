@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 
 const { useRouter } = require("next/router");
 
-const MovieDetail = () => {
+const MovieDetail = ({ params }) => {
   const router = useRouter();
-  const { id, title, thumbnail } = router.query;
+  const [title, id] = params ?? [];
+
+  const { thumbnail } = router.query;
 
   const [detailInfo, setDetailInfo] = useState(null);
 
@@ -83,14 +85,10 @@ const MovieDetail = () => {
 
 export default MovieDetail;
 
-// export const getServerSideProps = async () => {
-//   const { results } = await (
-//     await fetch(`http://localhost:3000/api/movie/:${id}`)
-//   ).json();
-
-//   return {
-//     props: {
-//       results,
-//     },
-//   };
-// };
+export const getServerSideProps = ({ params: { params } }) => {
+  return {
+    props: {
+      params,
+    },
+  };
+};

@@ -18,14 +18,10 @@ export default function Home({ results }) {
   const handleClick = (id, title, thumbnail) => {
     router.push(
       {
-        pathname: `movies/${id}`,
-        query: {
-          id,
-          title,
-          thumbnail,
-        },
+        pathname: `movies/${title}/${id}`,
+        query: { thumbnail },
       },
-      `movies/${id}`
+      `movies/${title}/${id}`
     );
   };
 
